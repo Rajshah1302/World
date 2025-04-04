@@ -1,5 +1,5 @@
 import { Token, User } from "@/types/types";
-import NexusLogo from "../assets/nexus-logo.png";
+import NexusLogo from "../assets/nexusLogo.png";
 
 const createMarkerElement = (className: string, content: string) => {
   const el = document.createElement("div");

@@ -1,6 +1,6 @@
 "use client";
 
-import PlayableMap from "../components/map/playable-map";
+import PlayableMap from "./components/map/playable-map";
 
 export default function Home() {
   return (

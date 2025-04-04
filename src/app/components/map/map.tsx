@@ -3,8 +3,8 @@
 import mapboxgl from "mapbox-gl";
 import { useRef, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Token, User } from "@/types/types"; // Removed Crate import
-import { createPlayerMarker, createTokenMarker } from "@/utlis/markers"; // Removed unused functions
+import { Token, User } from "@/types/types";
+import { createTokenMarker } from "../../../utlis/markers";
 
 interface MapComponentProps {
   tokens: Token[];
@@ -33,6 +33,7 @@ export default function MapComponent({
     if (!mapRef.current) {
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
+        center: [121.5333, 25.0333], 
         zoom: 18,
         pitch: 60,
         bearing: 0,
@@ -76,11 +77,11 @@ export default function MapComponent({
       });
     }
 
-    // Get and watch current user location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
+        () => {
+          const latitude = 24.0333;
+          const longitude = 121.5333;
           const newLocation: [number, number] = [longitude, latitude];
 
           mapRef.current?.flyTo({
@@ -93,12 +94,13 @@ export default function MapComponent({
             ?.setLngLat(newLocation)
             .addTo(mapRef.current!);
         },
-        (error) => console.error("Error getting location:", error)
+        // (error) => console.error("Error getting location:", error)
       );
 
       const watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
+        () => {
+          const latitude = 24.0333;
+          const longitude = 121.5333;
           const newLocation: [number, number] = [longitude, latitude];
 
           if (currentUserMarkerRef.current) {
@@ -110,12 +112,12 @@ export default function MapComponent({
             duration: 1000,
           });
         },
-        (error) => console.error("Error watching position:", error),
-        {
-          enableHighAccuracy: true,
-          maximumAge: 1000,
-          timeout: 5000,
-        }
+        // (error) => console.error("Error watching position:", error),
+        // {
+        //   enableHighAccuracy: true,
+        //   maximumAge: 1000,
+        //   timeout: 5000,
+        // }
       );
 
       return () => {
