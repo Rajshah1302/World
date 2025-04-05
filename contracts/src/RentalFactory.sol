@@ -15,13 +15,11 @@ contract RentalFactory is Ownable {
         string propertyLatitude;
         string propertyLongitude;
         string propertyDescription;
-        uint256 basePrice;
+        uint256 tokenPrice; 
     }
 
     mapping(uint256 => RentalProperty) public rentalProperties;
-    // Mapping from a property owner to an array of their listed property addresses.
     mapping(address => address[]) public ownerToProperties;
-    // Counter to assign property IDs.
     uint256 public propertyCount;
 
     event PropertyListed(
@@ -30,33 +28,34 @@ contract RentalFactory is Ownable {
         string propertyName
     );
 
+
     function listProperty(
          string memory _propertyName,
          string memory _propertyLatitude,
          string memory _propertyLongitude,
          string memory _propertyDescription,
-         uint256 _basePrice,
+         uint256 _tokenPrice,
          address _tokenAddress 
     ) external returns (address) {
         
-        RentalListing newRental = new RentalListing(
-            _propertyName,
-            _propertyLatitude,
-            _propertyLongitude,
-            _propertyDescription,
-            _basePrice,
-            msg.sender,
-            _tokenAddress 
-        );
+         RentalListing newRental = new RentalListing(
+             _propertyName,
+             _propertyLatitude,
+             _propertyLongitude,
+             _propertyDescription,
+             _tokenPrice,       
+             msg.sender,
+             _tokenAddress 
+         );
 
          propertyCount++;
          rentalProperties[propertyCount] = RentalProperty({
-            rentalAddress: address(newRental),
-            propertyName: _propertyName,
-            propertyLatitude: _propertyLatitude,
-            propertyLongitude: _propertyLongitude,
-            propertyDescription: _propertyDescription,
-            basePrice: _basePrice
+             rentalAddress: address(newRental),
+             propertyName: _propertyName,
+             propertyLatitude: _propertyLatitude,
+             propertyLongitude: _propertyLongitude,
+             propertyDescription: _propertyDescription,
+             tokenPrice: _tokenPrice
          });
 
          ownerToProperties[msg.sender].push(address(newRental));
