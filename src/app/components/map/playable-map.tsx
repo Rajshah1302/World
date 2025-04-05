@@ -24,34 +24,10 @@ export default function PlayableMap() {
     () => [
       {
         id: "1",
-        latitude: 25.0226,
-        longitude: 121.5381648295603,
-        symbol: "EME",
-        name: "Emerald",
-        backgroundColor: "#8A2BE2",
-      },
-      {
-        id: "2",
-        latitude: 26.904604725556646,
-        longitude: 75.92381648295603,
-        symbol: "RUB",
-        name: "Ruby",
-        backgroundColor: "#8A2BE2",
-      },
-      {
-        id: "3",
-        latitude: 26.9121,
-        longitude: 75.7777,
-        symbol: "SHIB",
-        name: "Shiba",
-        backgroundColor: "#8A2BE2",
-      },
-      {
-        id: "4",
-        latitude: 26.934604725556646,
-        longitude: 75.92381648295603,
-        symbol: "LNM",
-        name: "LNM Hacks",
+        latitude: 25.0333,
+        longitude: 121.5401648295603,
+        symbol: "WLD",
+        name: "Taipei 101",
         backgroundColor: "#8A2BE2",
       },
     ],
@@ -183,8 +159,8 @@ export default function PlayableMap() {
                 Verify
               </div>
             ) : (
-              <Link href="/mint">
-                <Button>Claim</Button>
+              <Link href="/projects/1">
+                <Button>Veiw Details</Button>
               </Link>
             )}
           </div>
