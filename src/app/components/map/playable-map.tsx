@@ -1,33 +1,31 @@
 "use client";
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-// import { useRouter } from "next/navigation"; // Import useRouter
+import React, { useState, useCallback, useMemo } from "react";
 import MapComponent from "./map";
-import {
-  Dialog,
-  // DialogClose,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
-// import ThemeButton from "../theme-button";
-// import RainbowBorderComponent from "../rainbow-border";
-// import Info from "../info";
-// import { useToast } from "@/hooks/use-toast";
-// import NexusLogo from "@/assets/nexusLogo.png";
-import Button from "@/components/Button";
 import Link from "next/link";
+import Button from "@/components/Button";
+
+// Import Drawer components and verification utilities
+import {
+  Drawer,
+  DrawerContent,
+  DrawerClose,
+  DrawerTrigger,
+  Typography,
+} from "@worldcoin/mini-apps-ui-kit-react";
+import {
+  MiniKit,
+  VerifyCommandInput,
+  VerificationLevel,
+} from "@worldcoin/minikit-js";
 
 export default function PlayableMap() {
-  // const { toast } = useToast();
-  // const router = useRouter(); // Initialize the router
-  // const [isLoading, setIsLoading] = useState(false);
-
   // Token markers
   const tokens = useMemo(
     () => [
       {
         id: "1",
-        latitude: 26.934604725556646,
-        longitude: 75.90381648295603,
+        latitude: 25.0226,
+        longitude: 121.5381648295603,
         symbol: "EME",
         name: "Emerald",
         backgroundColor: "#8A2BE2",
@@ -68,6 +66,7 @@ export default function PlayableMap() {
     avatarUrl: "📍",
   });
 
+  // Modal state for the token details
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     selectedItem: (typeof tokens)[0] | null;
@@ -75,6 +74,9 @@ export default function PlayableMap() {
     isOpen: false,
     selectedItem: null,
   });
+
+  // State for verification status
+  const [isVerified, setIsVerified] = useState(false);
 
   const handleTokenClick = useCallback((token) => {
     setModalState({
@@ -88,22 +90,9 @@ export default function PlayableMap() {
       isOpen: false,
       selectedItem: null,
     });
+    // Reset verification status if needed
+    setIsVerified(false);
   }, []);
-
-  // useEffect(() => {
-  //   if (!navigator.geolocation) return;
-
-  //   navigator.geolocation.getCurrentPosition(
-  //     (position) => {
-  //       setCurrentUser((prev) => ({
-  //         ...prev,
-  //         latitude: position.coords.latitude,
-  //         longitude: position.coords.longitude,
-  //       }));
-  //     },
-  //     (error) => console.error("Error retrieving geolocation:", error)
-  //   );
-  // }, []);
 
   const mapProps = useMemo(
     () => ({
@@ -114,55 +103,94 @@ export default function PlayableMap() {
     [tokens, currentUser, handleTokenClick]
   );
 
-  // const handleClaim = async () => {
-  //   // Add any additional logic (e.g., API calls) if necessary
-  //   router.push("/mint"); // Redirect to /mint
-  // };
+  // Verification payload for MiniKit
+  const verifyPayload: VerifyCommandInput = {
+    action: "verify",
+    signal: "",
+    verification_level: VerificationLevel.Device,
+  };
+
+  const handleVerify = async () => {
+    if (!MiniKit.isInstalled()) {
+      console.log("MiniKit is not installed");
+      return;
+    }
+    try {
+      // Initiate the verify command which opens the World App for incognito action
+      const { finalPayload } = await MiniKit.commandsAsync.verify(
+        verifyPayload
+      );
+      if (finalPayload.status === "error") {
+        console.log("Error during verification:", finalPayload);
+        return;
+      }
+      const response = await fetch("/api/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          payload: finalPayload,
+          action: "voting-action",
+          signal: "0x12312",
+        }),
+      });
+      setIsVerified(true)
+      const json = await response.json();
+      if (json.status === 200) {
+        console.log("Verification successful");
+        setIsVerified(true);
+      } else {
+        console.log("Verification failed", json);
+      }
+    } catch (error) {
+      console.error("Verification error:", error);
+    }
+  };
 
   return (
     <>
-      <main className="flex flex-col items-center justify-center h-screen">
+      <main className="flex flex-col items-center justify-center h-screen ">
         <MapComponent {...mapProps} />
       </main>
 
-      <Dialog
+      <Drawer
         open={modalState.isOpen}
-        onOpenChange={(open: boolean) => !open && handleModalClose()}
+        onOpenChange={(open: boolean) => {
+          if (!open) handleModalClose();
+        }}
       >
-        <DialogContent className="bg-transparent border-none">
-          <DialogTitle className="sr-only">
+        {/* Hidden trigger as the drawer is opened programmatically */}
+        {/* <DrawerTrigger>
+            <div style={{ display: "none" }}>Open Drawer</div>
+          </DrawerTrigger> */}
+        <DrawerContent className="w-screen flex flex-col items-center pt-2 pb-10 bg-white text-black rounded-[30px]">
+          <Typography component="h2" variant="heading" level={3}>
             {modalState.selectedItem?.name || "Item Details"}
-          </DialogTitle>
-          <div className="mb-4">
-            {modalState.selectedItem && (
-              <div className="space-y-4">
-                <div className="bg-blue-100 rounded-xl p-4">
-                  <div className="pb-4">
-                    {/* <Info
-                      tokenImage={NexusLogo.src}
-                      tokenName={modalState.selectedItem.name}
-                      tokenType={modalState.selectedItem.symbol}
-                      description={[
-                        "📧 Connect your wallet.",
-                        "🎯 Claim rewards now!",
-                      ]}
-                      rewardAmount="500"
-                      rewardSymbol="$APT"
-                    /> */}
-                    <div className="flex justify-center mt-4">
-                      {" "}
-                      {/* Changed from self-stretch flex justify-end to flex justify-center */}
-                      <Link href="/mint">
-                        <Button>Claim</Button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+          </Typography>
+          <Typography className="p-4">
+            {modalState.selectedItem
+              ? `Token Symbol: ${modalState.selectedItem.symbol}`
+              : ""}
+          </Typography>
+          <div className="flex space-x-4 mt-4">
+            {!isVerified ? (
+              <div
+                onClick={handleVerify}
+                className="w-[300px] bg-black text-white text-center py-3 rounded-2xl "
+              >
+                {" "}
+                Verify
               </div>
+            ) : (
+              <Link href="/mint">
+                <Button>Claim</Button>
+              </Link>
             )}
           </div>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
+      {/* )} */}
     </>
   );
 }

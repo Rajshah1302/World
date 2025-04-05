@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import {
   Drawer,
@@ -7,16 +7,20 @@ import {
   DrawerTrigger,
   Typography,
 } from "@worldcoin/mini-apps-ui-kit-react";
-import Button from "@/components/Button";
-import { MiniKit, VerifyCommandInput, VerificationLevel } from "@worldcoin/minikit-js";
+import div from "@/components/div";
+import {
+  MiniKit,
+  VerifyCommandInput,
+  VerificationLevel,
+} from "@worldcoin/minikit-js";
 
 export default function Home() {
   const [isVerified, setIsVerified] = useState(false);
 
   const verifyPayload: VerifyCommandInput = {
-    action: "voting-action", // Replace with your actual action ID from the Developer Portal
-    signal: "0x12312", // Optional: Replace with any signal data if needed
-    verification_level: VerificationLevel.Orb, // Can be Orb or Device based on your setup
+    action: "verify",
+    signal: "", // Optional: Replace with any signal data if needed
+    verification_level: VerificationLevel.Device,
   };
 
   const handleVerify = async () => {
@@ -26,13 +30,15 @@ export default function Home() {
     }
     try {
       // Initiate the verify command which opens the World App for incognito action
-      const { finalPayload } = await MiniKit.commandsAsync.verify(verifyPayload);
+      const { finalPayload } = await MiniKit.commandsAsync.verify(
+        verifyPayload
+      );
       if (finalPayload.status === "error") {
         console.log("Error during verification:", finalPayload);
         return;
       }
       // Send the proof to your backend verification route
-      const response = await fetch("https://a20a-111-235-226-130.ngrok-free.app/api/verify", {
+      const response = await fetch("/api/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +64,7 @@ export default function Home() {
   return (
     <Drawer>
       <DrawerTrigger>
-        <Button>Open Drawer</Button>
+        <div>Open Drawer</div>
       </DrawerTrigger>
       <DrawerContent className="w-screen flex flex-col items-center pb-4 bg-zinc-200">
         <Typography component="h2" variant="heading" level={3}>
@@ -67,15 +73,15 @@ export default function Home() {
         <Typography className="p-4">Drawer content</Typography>
         <div className="flex space-x-4 mt-4">
           {!isVerified && (
-            <Button onClick={handleVerify}>Verify</Button>
+            <div
+              onClick={handleVerify}
+              className="w-[300px] bg-black text-white text-center py-3 rounded-2xl "
+            >
+              Verify
+            </div>
           )}
-          {isVerified && (
-            <Button>Claim</Button>
-          )}
+          {isVerified && <div>Claim</div>}
         </div>
-        <DrawerClose>
-          <Button>Close</Button>
-        </DrawerClose>
       </DrawerContent>
     </Drawer>
   );
