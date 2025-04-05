@@ -3,13 +3,80 @@ import React, { useState } from "react";
 // import styled from 'styled-components';
 import "./style.css";
 import MobileNavbar from "../components/navbar";
+import { toast } from "@/components/ui/use-toast";
+import { MiniKit } from "@worldcoin/minikit-js";
 const Card = () => {
   const [yieldAmount, setYieldAmount] = useState(12345.67);
+  const [loading, setLoading] = useState(false);
+  const [claimStatus, setClaimStatus] = useState<string | null>(null);
 
-  // Handler to set the yield to 0.00 on claim
-  const handleClaim = () => {
-    setYieldAmount(0.0);
+  // Updated claim handler to call the claimRevenue function on-chain
+  const handleClaim = async () => {
+    setLoading(true);
+    try {
+      if (!MiniKit.isInstalled()) {
+        toast({
+          title: "MiniKit not installed",
+          description: "Please install MiniKit to proceed.",
+        });
+        return;
+      }
+      
+      // Construct the transaction payload for claimRevenue
+      const tx = {
+        address: YourContractAddress, // Your contract address
+        abi: YourContractAbi,         // Your contract ABI
+        functionName: "claimRevenue",
+        args: [],                     // No arguments for claimRevenue
+      };
+
+      // Optionally, send the payload to your backend (if needed)
+      const response = await fetch("/api/transaction", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tx),
+      });
+      const result = await response.json();
+      console.log(result.message);
+      console.log("Transaction:", tx);
+
+      // Send the transaction using MiniKit
+      const { commandPayload, finalPayload } = await MiniKit.commandsAsync.sendTransaction({
+        transaction: [tx],
+      });
+
+      // Finalize the transaction
+      const response2 = await fetch("/api/transaction", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(finalPayload),
+      });
+      
+      if (finalPayload.error) {
+        throw new Error(finalPayload.error);
+      } else {
+        setClaimStatus("Revenue claimed successfully!");
+        toast({
+          title: "Success",
+          description: "Revenue claimed successfully!",
+        });
+        // Update the yield to 0 after a successful claim
+        setYieldAmount(0);
+      }
+    } catch (error: any) {
+      console.error("Error claiming revenue:", error);
+      setClaimStatus("Error claiming revenue.");
+      toast({
+        title: "Error",
+        description: error?.message || "An error occurred while claiming revenue.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+      setTimeout(() => setClaimStatus(null), 3000);
+    }
   };
+  
   return (
     <div className="w-screen min-h-screen flex flex-col items-center  bg-white text-black rounded-2xl shadow-lg">
       <div className="card__img">
@@ -227,12 +294,12 @@ const Card = () => {
         </svg>
       </div>
       <div className="card__title">Cameron Williamson</div>
-      <div className="card__subtitle">Income</div>
-      <div className="text-5xl font-bold my-4">{yieldAmount.toFixed(2)} {" "} WLD</div>
+      <div className="card__subtitle pb-5">Income</div>
+      {/* <div className="text-5xl font-bold my-4">{yieldAmount.toFixed(2)} {" "} WLD</div> */}
       {/* Claim button */}
       <button
         onClick={handleClaim}
-        className="w-[325px] bg-black text-white py-2 rounded"
+        className="w-[325px] bg-black text-white py-2 rounded-lg h-[50px]"
       >
         Claim
       </button>

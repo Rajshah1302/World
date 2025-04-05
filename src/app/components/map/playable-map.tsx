@@ -36,8 +36,8 @@ export default function PlayableMap() {
 
   const [currentUser, setCurrentUser] = useState({
     id: "current",
-    latitude: 25.0333,
-    longitude: 121.5333,
+    latitude: 25.0407388,
+    longitude: 121.5491204,
     name: "You",
     avatarUrl: "📍",
   });
@@ -159,13 +159,13 @@ export default function PlayableMap() {
                 Verify
               </div>
             ) : (
-              <div
-                onClick={handleVerify}
+              <Link
+                href="/projects/1"
                 className="w-[300px] bg-black text-white text-center py-3 rounded-2xl "
               >
                 {" "}
-                Verify
-              </div>
+                View Details
+              </Link>
             )}
           </div>
         </DrawerContent>

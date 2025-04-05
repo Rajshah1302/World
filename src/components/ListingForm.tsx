@@ -179,7 +179,7 @@ export function PropertyForm() {
         {/* Step 3: Offered Price and Token Address */}
         <div className={currentStep === 3 ? "" : "hidden"}>
           <div>
-            <h2 htmlFor="offeredPrice">Offered Price (Token Amount)</h2>
+            <h2 htmlFor="offeredPrice">Token Price</h2>
             <Input
               id="offeredPrice"
               className="w-full rounded-md border border-gray-300 bg-white text-black"

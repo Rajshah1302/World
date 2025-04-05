@@ -33,7 +33,7 @@ export default function MapComponent({
     if (!mapRef.current) {
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
-        center: [121.5333, 25.0333], 
+        center: [121.5491204, 25.0407398], 
         zoom: 18,
         pitch: 60,
         bearing: 0,
@@ -80,8 +80,8 @@ export default function MapComponent({
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         () => {
-          const latitude = 24.0333;
-          const longitude = 121.5333;
+          const latitude = 25.0407398;
+          const longitude = 121.5491204;
           const newLocation: [number, number] = [longitude, latitude];
 
           mapRef.current?.flyTo({
@@ -99,8 +99,8 @@ export default function MapComponent({
 
       const watchId = navigator.geolocation.watchPosition(
         () => {
-          const latitude = 24.0333;
-          const longitude = 121.5333;
+          const latitude = 25.0407398;
+          const longitude = 121.5491204;
           const newLocation: [number, number] = [longitude, latitude];
 
           if (currentUserMarkerRef.current) {
