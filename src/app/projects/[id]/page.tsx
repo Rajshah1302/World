@@ -1,18 +1,19 @@
 'use client'
 
 import { useState } from "react";
-import { useRouter } from "next/router";
-
+import PaymentButton from "../../components/PaymentButton";
 export default function ProjectDetails() {
 
 
   // In a real app, you'd fetch project details by "id" here.
   // Below is just example data:
   const project = {
-    name: "Test Token",
-    symbol: "TEST",
+    name: "Taipei 101",
+    symbol: "WLD
+    
+    ",
     summary: "A test property investment opportunity in prime location",
-    monthlyRent: 1200,
+    monthlyRent: 1,
     location: "123 Blockchain Avenue, Crypto City, CC 12345",
     size: "1,200 sq ft",
     bedrooms: 2,
@@ -96,7 +97,7 @@ export default function ProjectDetails() {
           <div className="mb-4">
             <h2 className="text-lg font-semibold">Monthly Rent</h2>
             <p className="text-2xl font-bold text-blue-600">
-              ${project.monthlyRent}
+              {project.monthlyRent}WLD
             </p>
           </div>
 
@@ -136,9 +137,9 @@ export default function ProjectDetails() {
           </div>
 
           {/* Action Button */}
-          <button className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">
+          <PaymentButton>
             Proceed with Rental
-          </button>
+          </PaymentButton>
 
           {/* Funding Status */}
           {project.isFullyFunded && (
