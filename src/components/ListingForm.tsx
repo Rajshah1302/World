@@ -66,14 +66,33 @@ export function PropertyForm() {
           userTokenAddress,
         ],
       };
-
+      const response = await fetch('/api/transaction', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(tx)
+      });
+      
+      const result = await response.json();
+      console.log(result.message);
+      // console.log("Transaction:", tx);
       console.log("Transaction:", tx);
 
       // Use the synchronous command as shown in the docs.
       const payload = MiniKit.commands.sendTransaction({
         transaction: [tx],
       });
-
+      const response2 = await fetch('/api/transaction', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      const result2 = await response2.json();
+      console.log(result2.message);
       // Check if the payload contains an error.
       if (payload.error) {
         throw new Error(payload.error);
