@@ -4,11 +4,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { writeContract } from "@wagmi/core";
-import { RentalFactoryAbi } from "@/utlis/contractsABI/RentalFactory";
-import { RentalFactoryAddress } from "@/utlis/addresses";
 import { toast } from "@/components/ui/use-toast";
 import { config } from "@/utlis/config";
+import { RentalFactoryAbi } from "@/utlis/contractsABI/RentalFactory";
+import { RentalFactoryAddress } from "@/utlis/addresses";
+import { MiniKit } from "@worldcoin/minikit-js";
 
 interface PropertyFormData {
   propertyName: string;
@@ -16,7 +16,8 @@ interface PropertyFormData {
   propertyLongitude: string;
   propertyDescription: string;
   rentalMode: string; // "0" for monthly, "1" for daily (like hotels)
-  offeredPrice: string;
+  offeredPrice: string; // Token amount
+  tokenAddress: string; // User provided token address
 }
 
 export function PropertyForm() {
@@ -32,18 +33,27 @@ export function PropertyForm() {
   const onSubmit = async (data: PropertyFormData) => {
     setLoading(true);
     try {
+      if (!MiniKit.isInstalled()) {
+        toast({
+          title: "MiniKit not installed",
+          description: "Please install MiniKit to proceed.",
+        });
+        return;
+      }
       const chainId = config.state.chainId;
 
-      // Trim and prepare form data
+      // Prepare and trim form data
       const propertyName = data.propertyName.trim();
       const propertyLatitude = data.propertyLatitude.trim();
       const propertyLongitude = data.propertyLongitude.trim();
       const propertyDescription = data.propertyDescription.trim();
-      const rentalMode = parseInt(data.rentalMode, 10); // Convert "0" or "1" to a number
+      const rentalMode = parseInt(data.rentalMode, 10); // convert to number
       const offeredPrice = data.offeredPrice.trim();
+      const userTokenAddress = data.tokenAddress.trim();
 
-      // Call the contract function (update function name & args as needed)
-      const tx = await writeContract(config as any, {
+      // Construct the transaction payload for listProperty.
+      // All values are stringified as required.
+      const tx = {
         address: RentalFactoryAddress[chainId],
         abi: RentalFactoryAbi,
         functionName: "listProperty",
@@ -52,18 +62,31 @@ export function PropertyForm() {
           propertyLatitude,
           propertyLongitude,
           propertyDescription,
-          rentalMode,
+          rentalMode.toString(), // convert number to string
           offeredPrice,
+          userTokenAddress,
         ],
-      });
+      };
 
       console.log("Transaction:", tx);
-      setSubmitStatus("Property listing created successfully!");
-      toast({
-        title: "Success",
-        description: "Property listing created successfully!",
-      });
-      // router.push("/organizer/MyProperties");
+
+      // Send the transaction using MiniKit's sendTransaction command
+      const { commandPayload, finalPayload } =
+        await MiniKit.commandsAsync.sendTransaction({
+          transaction: [tx],
+        });
+
+      // Check for errors in the transaction response
+      if (finalPayload.status === "error") {
+        throw new Error(finalPayload.error);
+      } else {
+        setSubmitStatus("Property listing created successfully!");
+        toast({
+          title: "Success",
+          description: "Property listing created successfully!",
+        });
+        // Optionally, navigate to another page (e.g., MyProperties)
+      }
     } catch (error: any) {
       console.error("Error creating property listing:", error);
       setSubmitStatus("Error creating property listing.");
@@ -139,13 +162,11 @@ export function PropertyForm() {
       </div>
 
       <div>
-        <h2 htmlFor="rentalMode">Rental Mode    </h2>
+        <h2 htmlFor="rentalMode">Rental Mode</h2>
         <select
           id="rentalMode"
           className="rounded-md border border-gray-300 bg-white text-black"
-          {...register("rentalMode", {
-            required: "Rental mode is required",
-          })}
+          {...register("rentalMode", { required: "Rental mode is required" })}
         >
           <option value="">Select Rental Mode</option>
           <option value="0">Monthly</option>
@@ -157,7 +178,7 @@ export function PropertyForm() {
       </div>
 
       <div>
-        <h2 htmlFor="offeredPrice">Offered Price</h2>
+        <h2 htmlFor="offeredPrice">Offered Price (Token Amount)</h2>
         <Input
           id="offeredPrice"
           className="rounded-md border border-gray-300 bg-white text-black"
@@ -167,6 +188,20 @@ export function PropertyForm() {
         />
         {errors.offeredPrice && (
           <p className="text-red-500">{errors.offeredPrice.message}</p>
+        )}
+      </div>
+
+      <div>
+        <h2 htmlFor="tokenAddress">Token Address</h2>
+        <Input
+          id="tokenAddress"
+          className="rounded-md border border-gray-300 bg-white text-black"
+          {...register("tokenAddress", {
+            required: "Token address is required",
+          })}
+        />
+        {errors.tokenAddress && (
+          <p className="text-red-500">{errors.tokenAddress.message}</p>
         )}
       </div>
 
