@@ -20,7 +20,7 @@ const navItems: NavItem[] = [
     icon: <FaCompass size={24} />,
   },
   {
-    href: '/scroll',
+    href: '/test',
     icon: <FaScroll size={24} />,
   },
 ];
