@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaSearch, FaScroll } from 'react-icons/fa';
+import { FaHome, FaCompass, FaScroll } from 'react-icons/fa';
 
 interface NavItem {
   href: string;
@@ -12,12 +12,12 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    href: '/',
+    href: '/explorer',
     icon: <FaHome size={24} />,
   },
   {
-    href: '/search',
-    icon: <FaSearch size={24} />,
+    href: '/',
+    icon: <FaCompass size={24} />,
   },
   {
     href: '/scroll',
@@ -33,9 +33,9 @@ const MobileNavbar: React.FC = () => {
       {navItems.map(({ href, icon }, index) => {
         const isActive = pathname === href;
         return (
-          <Link 
-            href={href} 
-            key={index} 
+          <Link
+            href={href}
+            key={index}
             className={`flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors ${isActive ? 'text-indigo-600' : ''}`}
           >
             {icon}
