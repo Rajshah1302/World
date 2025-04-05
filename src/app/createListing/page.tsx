@@ -1,5 +1,6 @@
 import { PropertyForm } from "@/components/ListingForm";
 import { Orbitron } from "next/font/google";
+import MobileNavbar from "../components/navbar";
 
 
 const orbitron = Orbitron({
@@ -12,10 +13,11 @@ export default function List() {
     <main
       className={`${orbitron.className} flex min-h-screen flex-col items-center justify-center p-8 bg-white text-black`}
     >
-      <div className="z-10 max-w-3xl w-full text-sm">
-        <h1 className="text-4xl font-bold text-center mb-8">List a Property</h1>
+      <div className=" max-w-3xl w-full text-sm">
+        <h1 className="text-4xl font-bold text-center mb-8 ">List a Property</h1>
         <PropertyForm />
       </div>
+      <MobileNavbar/>
     </main>
   );
 }
