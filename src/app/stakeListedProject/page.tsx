@@ -1,11 +1,10 @@
-'use client'
+"use client";
 import { useState } from "react";
 import Link from "next/link";
-import { ProjectCard } from "@/components/project-card";
+import { ProjectCard } from "./ProjectCard";
 import MobileNavbar from "../components/navbar";
 
 const projects = [
-
   {
     id: "2",
     name: "Urban Heights",
@@ -34,21 +33,18 @@ const projects = [
     duration: "4 nights · 5-9 Aug",
     isFavorite: true,
   },
-  
 ];
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredProjects = projects.filter((project) =>
-    (project.name + project.symbol)
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase())
+    (project.name + project.symbol).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="px-4 py-4">
-      {/* Search Bar */}
+    <div className="px-4 py-4 pt-20">
+      {/* Fixed Search Bar */}
       <div className="mb-6 fixed top-0 left-0 right-0 z-10 bg-white p-4 shadow-md rounded-2xl">
         <input
           type="text"
@@ -60,7 +56,7 @@ export default function Home() {
       </div>
 
       {/* Filtered Projects */}
-      <div className="space-y-6">
+      <div className="space-y-6 mt-4">
         {filteredProjects.map((project) => (
           <Link
             href={`/stakeListedProject/${project.id}`}
