@@ -72,7 +72,7 @@ export default function PaymentButton({ children = "Send Payment" }: PaymentButt
   return (
     <button
       onClick={sendPayment}
-      className="w-[300px] bg-black text-white text-center py-3 rounded-2xl"
+      className="w-[325px] bg-black text-white text-center py-3 rounded-2xl"
     >
       {children}
     </button>
