@@ -72,7 +72,7 @@ export default function PaymentButton({ children = "Send Payment" }: PaymentButt
   return (
     <button
       onClick={sendPayment}
-      className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+      className="w-[300px] bg-black text-white text-center py-3 rounded-2xl"
     >
       {children}
     </button>
