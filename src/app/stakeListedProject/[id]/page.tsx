@@ -1,6 +1,7 @@
 "use client";
 
 import PaymentButton from "@/app/components/PaymentButton";
+import MobileNavbar from "@/app/components/navbar";
 import { useState } from "react";
 
 export default function Home() {
@@ -8,7 +9,7 @@ export default function Home() {
 
   // Data constants
   const tokenPrice = 0.025;
-  const remainingSupply = 95000000;
+  const remainingSupply = 1000000;
 
   const topHolders = [
     {
@@ -30,23 +31,20 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white text-gray-800">
-      <header className="bg-gradient-to-r from-emerald-800 to-teal-700 text-white py-12 px-4 ">
+      <header className="bg-zinc-100 text-black py-12 px-4 fixed w-full top-0 left-0 z-20 ">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center mb-4">
-            <span className="bg-white text-emerald-800 text-xs font-bold px-2 py-1 rounded mr-3">
+            <span className="bg-white text-black-800 text-xs font-bold px-2 py-1 rounded mr-3">
               URBH
             </span>
             <h1 className="text-3xl md:text-4xl font-bold">Urban Heights</h1>
           </div>
-          <p className="text-emerald-50 text-lg md:text-xl max-w-2xl">
-            Luxury apartment complex in downtown metropolitan area
-          </p>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto py-8 px-4 space-y-8">
-        <div className="bg-white rounded-xl  p-6 md:p-8 hover: transition-shadow duration-300">
-          <h2 className="text-2xl font-bold text-emerald-800 mb-4">
+      <main className="max-w-6xl mx-auto py-8 px-4 space-y-8 mt-32 mb-10 ">
+        <div className="bg-white rounded-xl  p-4 md:p-8 hover: transition-shadow duration-300">
+          <h2 className="text-2xl font-bold text-black mb-4">
             About This Project
           </h2>
           <p className="text-gray-600 leading-relaxed">
@@ -56,15 +54,10 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="bg-white rounded-xl  p-6 md:p-8 hover: transition-shadow duration-300">
+        <div className="bg-white rounded-xl  p-4 md:p-8 hover: transition-shadow duration-300">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-emerald-800">Top Holders</h2>
-            <a
-              href="#"
-              className="text-emerald-600 hover:text-emerald-800 flex items-center text-sm font-medium transition-colors duration-200"
-            >
-              View All <span className="ml-1">→</span>
-            </a>
+           
           </div>
 
           <ul className="divide-y divide-gray-100">
@@ -94,10 +87,8 @@ export default function Home() {
           </ul>
         </div>
 
-        <div className="bg-white rounded-xl  p-6 md:p-8 hover: transition-shadow duration-300">
-          <h2 className="text-2xl font-bold text-emerald-800 mb-6">
-            Stake Funds
-          </h2>
+        <div className="bg-white rounded-xl  p-4 md:p-8 hover: transition-shadow duration-300">
+          <h2 className="text-2xl font-bold text-black mb-6">Invest Funds</h2>
 
           <div className="grid grid-cols-2 gap-4 mb-6 bg-gray-50 p-4 rounded-lg">
             <div className="text-gray-600">Token Price</div>
@@ -114,7 +105,7 @@ export default function Home() {
               className="block text-gray-700 mb-2 font-medium"
               htmlFor="stakeAmount"
             >
-              Amount to Stake (USD)
+              Amount to Invest (WLD)
             </label>
             <input
               id="stakeAmount"
@@ -126,13 +117,10 @@ export default function Home() {
             />
           </div>
 
-          <PaymentButton>Stake Funds</PaymentButton>
-
-          <p className="text-xs text-gray-500 text-center">
-            By staking, you agree to the terms and conditions of this platform.
-          </p>
+          <PaymentButton>Invest</PaymentButton>
         </div>
       </main>
+      <MobileNavbar />
     </div>
   );
 }
