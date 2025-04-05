@@ -159,9 +159,13 @@ export default function PlayableMap() {
                 Verify
               </div>
             ) : (
-              <Link href="/projects/1">
-                <Button>Veiw Details</Button>
-              </Link>
+              <div
+                onClick={handleVerify}
+                className="w-[300px] bg-black text-white text-center py-3 rounded-2xl "
+              >
+                {" "}
+                Verify
+              </div>
             )}
           </div>
         </DrawerContent>
