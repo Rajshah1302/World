@@ -20,7 +20,7 @@ contract RentalListing {
     // --- Payment Token for Revenue & Bidding ---
     // (For example, USDC)
     IERC20 public paymentToken;
-
+ 
     // --- Token Holdings for Property Shares ---
     mapping(address => uint256) public tokenBalances;
     uint256 public totalTokens;
@@ -54,4 +54,5 @@ contract RentalListing {
          tokenBalances[_owner] = totalTokens;
     }
 
+     
 }

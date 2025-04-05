@@ -1,5 +1,5 @@
 export const RentalFactoryAddress = {
-  534351: "0x87ef3e1d2c2b794b0665ea57357679bf10763f75",
+  4801: "0x4f602d42b85549eefa820e87b16dd57455d5d9f5",
 } as {
   [key: number]: `0x${string}`;
 };
