@@ -24,8 +24,8 @@ export default function PlayableMap() {
     () => [
       {
         id: "1",
-        latitude: 25.0333,
-        longitude: 121.5401648295603,
+        latitude: 25.033964,
+        longitude: 121.564468,
         symbol: "WLD",
         name: "Taipei 101",
         backgroundColor: "#8A2BE2",
