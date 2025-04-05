@@ -62,7 +62,6 @@ export function PropertyForm() {
           propertyLatitude,
           propertyLongitude,
           propertyDescription,
-          rentalMode.toString(), // convert number to string
           offeredPrice,
           userTokenAddress,
         ],
@@ -70,22 +69,20 @@ export function PropertyForm() {
 
       console.log("Transaction:", tx);
 
-      // Send the transaction using MiniKit's sendTransaction command
-      const { commandPayload, finalPayload } =
-        await MiniKit.commandsAsync.sendTransaction({
-          transaction: [tx],
-        });
+      // Use the synchronous command as shown in the docs.
+      const payload = MiniKit.commands.sendTransaction({
+        transaction: [tx],
+      });
 
-      // Check for errors in the transaction response
-      if (finalPayload.status === "error") {
-        throw new Error(finalPayload.error);
+      // Check if the payload contains an error.
+      if (payload.error) {
+        throw new Error(payload.error);
       } else {
         setSubmitStatus("Property listing created successfully!");
         toast({
           title: "Success",
           description: "Property listing created successfully!",
         });
-        // Optionally, navigate to another page (e.g., MyProperties)
       }
     } catch (error: any) {
       console.error("Error creating property listing:", error);
@@ -158,22 +155,6 @@ export function PropertyForm() {
         />
         {errors.propertyDescription && (
           <p className="text-red-500">{errors.propertyDescription.message}</p>
-        )}
-      </div>
-
-      <div>
-        <h2 htmlFor="rentalMode">Rental Mode</h2>
-        <select
-          id="rentalMode"
-          className="rounded-md border border-gray-300 bg-white text-black"
-          {...register("rentalMode", { required: "Rental mode is required" })}
-        >
-          <option value="">Select Rental Mode</option>
-          <option value="0">Monthly</option>
-          <option value="1">Daily (like hotels)</option>
-        </select>
-        {errors.rentalMode && (
-          <p className="text-red-500">{errors.rentalMode.message}</p>
         )}
       </div>
 

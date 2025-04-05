@@ -13,7 +13,6 @@ contract RentalListing {
     string public propertyLatitude;
     string public propertyLongitude;
     string public propertyDescription;
-    uint8 public rentalMode; 
     uint256 public basePrice;
 
 
@@ -34,7 +33,6 @@ contract RentalListing {
          string memory _propertyLatitude,
          string memory _propertyLongitude,
          string memory _propertyDescription,
-         uint8 _rentalMode,
          uint256 _basePrice,
          address _owner,
          address _tokenAddress // payment token address (e.g., USDC)
@@ -44,7 +42,6 @@ contract RentalListing {
          propertyLatitude = _propertyLatitude;
          propertyLongitude = _propertyLongitude;
          propertyDescription = _propertyDescription;
-         rentalMode = _rentalMode;
          basePrice = _basePrice;
          paymentToken = IERC20(_tokenAddress);
 

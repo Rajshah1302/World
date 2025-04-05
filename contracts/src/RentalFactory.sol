@@ -15,7 +15,6 @@ contract RentalFactory is Ownable {
         string propertyLatitude;
         string propertyLongitude;
         string propertyDescription;
-        uint8 rentalMode; // 0 for monthly, 1 for daily (like hotels)
         uint256 basePrice;
     }
 
@@ -36,7 +35,6 @@ contract RentalFactory is Ownable {
          string memory _propertyLatitude,
          string memory _propertyLongitude,
          string memory _propertyDescription,
-         uint8 _rentalMode,
          uint256 _basePrice,
          address _tokenAddress 
     ) external returns (address) {
@@ -46,7 +44,6 @@ contract RentalFactory is Ownable {
             _propertyLatitude,
             _propertyLongitude,
             _propertyDescription,
-            _rentalMode,
             _basePrice,
             msg.sender,
             _tokenAddress 
@@ -59,7 +56,6 @@ contract RentalFactory is Ownable {
             propertyLatitude: _propertyLatitude,
             propertyLongitude: _propertyLongitude,
             propertyDescription: _propertyDescription,
-            rentalMode: _rentalMode,
             basePrice: _basePrice
          });
 
