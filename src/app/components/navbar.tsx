@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaCompass, FaScroll } from 'react-icons/fa';
+import { FaHome, FaScroll, FaCompass, FaCoins, FaUserCircle } from 'react-icons/fa';
 
 interface NavItem {
   href: string;
@@ -11,18 +11,11 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  {
-    href: '/explorer',
-    icon: <FaHome size={24} />,
-  },
-  {
-    href: '/',
-    icon: <FaCompass size={24} />,
-  },
-  {
-    href: '/test',
-    icon: <FaScroll size={24} />,
-  },
+  { href: '/explorer', icon: <FaHome size={24} /> },           // Home
+  { href: '/createListing', icon: <FaScroll size={24} /> },       // Scroll
+  { href: '/', icon: <FaCompass size={24} /> },    // Compass
+  { href: '/stakeListedProject', icon: <FaCoins size={24} /> },          // Coin
+  { href: '/profile', icon: <FaUserCircle size={24} /> },  // Profile Avatar
 ];
 
 const MobileNavbar: React.FC = () => {
