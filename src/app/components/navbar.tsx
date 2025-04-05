@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaSearch, FaScroll } from 'react-icons/fa';
+import { FaHome, FaCompass, FaScroll } from 'react-icons/fa';
 
 interface NavItem {
   href: string;
@@ -12,12 +12,12 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    href: '/',
+    href: '/explorer',
     icon: <FaHome size={24} />,
   },
   {
-    href: '/search',
-    icon: <FaSearch size={24} />,
+    href: '/',
+    icon: <FaCompass size={24} />,
   },
   {
     href: '/scroll',
