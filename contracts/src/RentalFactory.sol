@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import { RentalListing } from "contracts/src/RentalListing.sol";
+import { RentalListing } from "./RentalListing.sol";
 
 contract RentalFactory is Ownable {
     error RentalFactory_InvalidIndex();

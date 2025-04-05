@@ -54,7 +54,7 @@ export function PropertyForm() {
       // Construct the transaction payload for listProperty.
       // All values are stringified as required.
       const tx = {
-        address: RentalFactoryAddress[chainId],
+        address: "0x7a558f2c335194db49778bdbebc24d496755ea35",
         abi: RentalFactoryAbi,
         functionName: "listProperty",
         args: [
