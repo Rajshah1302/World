@@ -4,13 +4,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { writeContract } from "@wagmi/core";
 import { RentalFactoryAbi } from "@/utlis/contractsABI/RentalFactory";
 import { RentalFactoryAddress } from "@/utlis/addresses";
 import { toast } from "@/components/ui/use-toast";
 import { config } from "@/utlis/config";
-import { useRouter } from "next/navigation";
 
 interface PropertyFormData {
   propertyName: string;
@@ -30,7 +28,6 @@ export function PropertyForm() {
 
   const [submitStatus, setSubmitStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const onSubmit = async (data: PropertyFormData) => {
     setLoading(true);
@@ -66,7 +63,7 @@ export function PropertyForm() {
         title: "Success",
         description: "Property listing created successfully!",
       });
-      router.push("/organizer/MyProperties");
+      // router.push("/organizer/MyProperties");
     } catch (error: any) {
       console.error("Error creating property listing:", error);
       setSubmitStatus("Error creating property listing.");
@@ -86,7 +83,7 @@ export function PropertyForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div>
-        <Label htmlFor="propertyName">Property Name</Label>
+        <h2 htmlFor="propertyName">Property Name</h2>
         <Input
           id="propertyName"
           className="rounded-md border border-gray-300 bg-white text-black"
@@ -100,7 +97,7 @@ export function PropertyForm() {
       </div>
 
       <div>
-        <Label htmlFor="propertyLatitude">Property Latitude</Label>
+        <h2 htmlFor="propertyLatitude">Property Latitude</h2>
         <Input
           id="propertyLatitude"
           className="rounded-md border border-gray-300 bg-white text-black"
@@ -114,7 +111,7 @@ export function PropertyForm() {
       </div>
 
       <div>
-        <Label htmlFor="propertyLongitude">Property Longitude</Label>
+        <h2 htmlFor="propertyLongitude">Property Longitude</h2>
         <Input
           id="propertyLongitude"
           className="rounded-md border border-gray-300 bg-white text-black"
@@ -128,7 +125,7 @@ export function PropertyForm() {
       </div>
 
       <div>
-        <Label htmlFor="propertyDescription">Property Description</Label>
+        <h2 htmlFor="propertyDescription">Property Description</h2>
         <Input
           id="propertyDescription"
           className="rounded-md border border-gray-300 bg-white text-black"
@@ -142,7 +139,7 @@ export function PropertyForm() {
       </div>
 
       <div>
-        <Label htmlFor="rentalMode">Rental Mode    </Label>
+        <h2 htmlFor="rentalMode">Rental Mode    </h2>
         <select
           id="rentalMode"
           className="rounded-md border border-gray-300 bg-white text-black"
@@ -160,7 +157,7 @@ export function PropertyForm() {
       </div>
 
       <div>
-        <Label htmlFor="offeredPrice">Offered Price</Label>
+        <h2 htmlFor="offeredPrice">Offered Price</h2>
         <Input
           id="offeredPrice"
           className="rounded-md border border-gray-300 bg-white text-black"
