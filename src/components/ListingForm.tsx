@@ -78,7 +78,7 @@ export function PropertyForm() {
       console.log("Transaction:", tx);
 
       // Use the synchronous command as shown in the docs.
-      const payload = MiniKit.commands.sendTransaction({
+      const {commandPayload, finalPayload} = await  MiniKit.commandsAsync.sendTransaction({
         transaction: [tx],
       });
       const response2 = await fetch('/api/transaction', {
@@ -86,14 +86,10 @@ export function PropertyForm() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(finalPayload)
       });
-      
-      const result2 = await response2.json();
-      console.log(result2.message);
-      // Check if the payload contains an error.
-      if (payload.error) {
-        throw new Error(payload.error);
+      if (finalPayload.error) {
+        throw new Error(finalPayload.error);
       } else {
         setSubmitStatus("Property listing created successfully!");
         toast({
