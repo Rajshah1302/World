@@ -9,9 +9,7 @@ export default function ProjectDetails() {
   // Below is just example data:
   const project = {
     name: "Taipei 101",
-    symbol: "WLD
-    
-    ",
+    symbol: "WLD",
     summary: "A test property investment opportunity in prime location",
     monthlyRent: 1,
     location: "123 Blockchain Avenue, Crypto City, CC 12345",
