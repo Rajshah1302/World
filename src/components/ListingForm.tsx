@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { config } from "@/utlis/config";
 import { RentalFactoryAbi } from "@/utlis/contractsABI/RentalFactory";
 import { RentalFactoryAddress } from "@/utlis/addresses";
 import { MiniKit } from "@worldcoin/minikit-js";
@@ -40,7 +39,6 @@ export function PropertyForm() {
         });
         return;
       }
-      const chainId = config.state.chainId;
 
       // Prepare and trim form data
       const propertyName = data.propertyName.trim();
